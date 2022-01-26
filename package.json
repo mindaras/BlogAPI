@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon",
-    "start:test": "ts-node -r tsconfig-paths/register src/index.ts",
-    "start:prod": "yarn run build &&  NODE_ENV=production ts-node-transpile-only -r tsconfig-paths/register dist/index.js",
+    "start:prod": "npm run build && node dist/index.js",
     "build": "rimraf dist && tsc --build tsconfig.json"
   },
   "author": "Mindaugas Lazauskas",
