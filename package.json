@@ -1,0 +1,29 @@
+{
+  "name": "blog-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon",
+    "start:test": "ts-node -r tsconfig-paths/register src/index.ts",
+    "start:prod": "yarn run build &&  NODE_ENV=production ts-node-transpile-only -r tsconfig-paths/register dist/index.js",
+    "build": "rimraf dist && tsc --build tsconfig.json"
+  },
+  "author": "Mindaugas Lazauskas",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^14.0.14",
+    "nodemon": "^2.0.4",
+    "rimraf": "^3.0.2",
+    "ts-node": "^8.10.2",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^3.9.6"
+  },
+  "dependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.2"
+  }
+}
