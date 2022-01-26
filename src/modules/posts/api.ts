@@ -12,13 +12,12 @@ const getPosts: RequestHandler = (_, res) => {
 };
 
 const getPost: RequestHandler = (req, res) => {
-  const id = req.params.id;
-
-  if (!id) {
-    res.status(400).send({ message: "No id was provided" });
+  if (!req.params.id) {
+    res.status(400).json({ message: "No id was provided" });
   }
 
-  const post = posts.find((post) => post.id === parseInt(id));
+  const id = parseInt(req.params.id);
+  const post = posts.find((post) => post.id === id);
 
   if (post) res.json(post);
   else res.status(404).json({ message: "No post was found with such id." });
