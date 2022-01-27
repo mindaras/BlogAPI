@@ -8,8 +8,8 @@ const init = async () => {
 
   app.use(cors());
   app.use(express.json());
-  app.use("/users", usersApi);
-  app.use("/posts", postsApi);
+  app.use("/api/users", usersApi);
+  app.use("/api/posts", postsApi);
   app.listen(process.env.PORT, () =>
     console.log(`Listening on port: ${process.env.PORT}`)
   );

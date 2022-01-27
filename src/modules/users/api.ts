@@ -35,7 +35,9 @@ const signIn: RequestHandler = async (req, res) => {
   try {
     const user = await db.querySingle<
       Pick<User, "id" | "fullName" | "password">
-    >(`SELECT id, fullName, password FROM users WHERE email = $1`, [email]);
+    >(`SELECT id, password FROM users WHERE email = $1`, [email]);
+
+    if (!user) return res.status(401).send({ message: "Invalid credentials" });
 
     const matches = await checkPassword(password, user?.password);
 
@@ -43,7 +45,7 @@ const signIn: RequestHandler = async (req, res) => {
       const accessToken = generateAccessToken({ id: user?.id });
       res.status(200).json({ accessToken });
     } else {
-      res.status(401).send({ message: "Incorrect credentials" });
+      res.status(401).send({ message: "Invalid credentials" });
     }
   } catch (e) {
     res.status(400).send(toErrorResponse(e));
