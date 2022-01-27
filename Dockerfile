@@ -1,13 +1,11 @@
-FROM node:12
+FROM node:16
 
 WORKDIR /usr/app
 
-COPY package.json yarn.lock ./
-
-RUN yarn
-
 COPY . .
 
-EXPOSE 8000
+RUN npm i
 
-CMD ["yarn", "start:prod"]
+RUN npm run build
+
+CMD ["node", "dist/index.js"]

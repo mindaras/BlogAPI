@@ -1,14 +1,7 @@
 import { Router, RequestHandler } from "express";
 
-const posts = [
-  { id: 1, title: "Some title 1", body: "Some body" },
-  { id: 2, title: "Some title 2", body: "Some body" },
-  { id: 3, title: "Some title 3", body: "Some body" },
-  { id: 4, title: "Some title 4", body: "Some body" },
-];
-
 const getPosts: RequestHandler = (_, res) => {
-  res.json(posts);
+  res.json({});
 };
 
 const getPost: RequestHandler = (req, res) => {
@@ -17,12 +10,18 @@ const getPost: RequestHandler = (req, res) => {
   }
 
   const id = parseInt(req.params.id);
-  const post = posts.find((post) => post.id === id);
+  const post = {};
 
   if (post) res.json(post);
-  else res.status(404).json({ message: "No post was found with such id." });
+  else
+    res.status(404).json({ message: "No post was found with the provided id" });
 };
 
-const postsApi = Router().get("/", getPosts).get("/:id", getPost);
+const createPost: RequestHandler = async (req, res) => {};
+
+const postsApi = Router()
+  .get("/", getPosts)
+  .get("/:id", getPost)
+  .post("/", createPost);
 
 export { postsApi };
