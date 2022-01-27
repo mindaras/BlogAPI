@@ -24,7 +24,7 @@ or
 
 `npm run migration:create migrationname -- --sql-file`
 
-### Run not yet applied migrations
+### Run migrations that haven't been applied
 
 `npm run migration:up`
 
