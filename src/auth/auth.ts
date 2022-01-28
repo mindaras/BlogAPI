@@ -12,7 +12,7 @@ const checkPassword = async (password: string, hash: string) =>
   bcrypt.compare(password, hash);
 
 const generateAccessToken = (user: Pick<User, "id">) =>
-  jwt.sign(user, config.auth.tokenSecret, { expiresIn: "3600s" });
+  jwt.sign(user, config.auth.tokenSecret, { expiresIn: `${3600 * 12}s` });
 
 const auth: RequestHandler = (req, res, next) => {
   const token =
