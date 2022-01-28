@@ -1,7 +1,7 @@
 import { Pool } from "pg";
 import { config } from "src/config/config";
 
-const pool = new Pool({ connectionString: config.dbUrl });
+const pool = new Pool(config.db);
 
 const query = async <T>(sql: string, values?: Array<string | number>) => {
   const response = await pool.query(sql, values);

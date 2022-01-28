@@ -1,27 +1,104 @@
 import { Router, RequestHandler } from "express";
+import { auth, parseAuthPayload, toErrorResponse } from "src/common";
+import { db } from "src/db/client";
+import { Post } from "./models";
 
-const getPosts: RequestHandler = (_, res) => {
-  res.json({});
+const getAll: RequestHandler = async (_, res) => {
+  try {
+    const data = await db.query(`SELECT * FROM posts;`);
+    res.json({ data });
+  } catch (e) {
+    res.status(500).json(toErrorResponse(e));
+  }
 };
 
-const getPost: RequestHandler = (req, res) => {
-  if (!req.params.id) {
-    res.status(400).json({ message: "No id was provided" });
+const get: RequestHandler = async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) return res.status(400).json({ message: "No id was provided" });
+
+  try {
+    const post = await db.querySingle("SELECT * FROM posts WHERE id = $1", [
+      id,
+    ]);
+
+    if (post) res.json(post);
+    else {
+      res.status(404).json({ message: "No post was found with the given id" });
+    }
+  } catch (e) {
+    res.status(500).json(toErrorResponse(e));
+  }
+};
+
+const create: RequestHandler = async (req, res) => {
+  const { title, body }: Post = req.body;
+  const user = parseAuthPayload(req);
+
+  try {
+    const data = await db.querySingle(
+      `INSERT INTO posts(title, body, userId) 
+      VALUES($1, $2, $3) 
+      RETURNING *, to_char(createdOn, 'YYYY-MM-DD') as createdOn;`,
+      [title, body, user?.id]
+    );
+
+    res.json({ data });
+  } catch (e) {
+    res.status(400).json(toErrorResponse(e));
+  }
+};
+
+const checkOwnership: RequestHandler = async (req, res, next) => {
+  const post = await db.querySingle<Pick<Post, "userid">>(
+    "SELECT userId FROM posts WHERE id = $1",
+    [req.params.id]
+  );
+
+  const user = parseAuthPayload(req);
+  const isOwner = post?.userid === user?.id;
+
+  if (!isOwner) {
+    return res
+      .status(403)
+      .json({ message: "The post doesn't belong to this user" });
   }
 
-  const id = parseInt(req.params.id);
-  const post = {};
-
-  if (post) res.json(post);
-  else
-    res.status(404).json({ message: "No post was found with the provided id" });
+  next();
 };
 
-const createPost: RequestHandler = async (req, res) => {};
+const update: RequestHandler = async (req, res) => {
+  const { title, body }: Post = req.body;
+
+  try {
+    const data = await db.querySingle<Post>(
+      `UPDATE posts 
+      SET title = $1, body = $2, updatedOn = now() 
+      WHERE id = $3
+      RETURNING *, to_char(createdOn, 'YYYY-MM-DD') as createdOn, to_char(createdOn, 'YYYY-MM-DD') as updatedOn;`,
+      [title, body, req.params.id]
+    );
+
+    res.json({ data });
+  } catch (e) {
+    res.status(400).json(toErrorResponse(e));
+  }
+};
+
+const remove: RequestHandler = async (req, res) => {
+  try {
+    await db.query("DELETE FROM posts WHERE id = $1", [req.params.id]);
+    res.sendStatus(204);
+  } catch (e) {
+    res.status(400).json(toErrorResponse(e));
+  }
+};
 
 const postsApi = Router()
-  .get("/", getPosts)
-  .get("/:id", getPost)
-  .post("/", createPost);
+  .get("/", getAll)
+  .get("/:id", get)
+  .post("/", auth, checkOwnership, create)
+  .put("/:id", auth, checkOwnership, update)
+  .delete("/:id", auth, checkOwnership, remove);
 
 export { postsApi };

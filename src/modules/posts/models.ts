@@ -1,9 +1,10 @@
 interface Post {
   id: string;
-  userId: string;
+  userid: string;
   title: string;
+  status: string;
   body: string;
-  createdOn: string;
+  createdon: string;
 }
 
 export { Post };

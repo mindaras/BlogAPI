@@ -2,9 +2,9 @@ interface User {
   id: string;
   email: string;
   password: string;
-  fullName: string;
-  about: string;
-  createdOn: string;
+  fullname: string;
+  about?: string;
+  createdon: string;
 }
 
 export { User };

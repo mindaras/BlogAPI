@@ -9,7 +9,7 @@ import { db } from "src/db/client";
 import { User } from "./models";
 
 const signUp: RequestHandler = async (req, res) => {
-  const { email, password, fullName }: User = req.body;
+  const { email, password, fullname }: User = req.body;
 
   try {
     if (password?.length < 8) {
@@ -20,10 +20,10 @@ const signUp: RequestHandler = async (req, res) => {
 
     await db.query(
       `INSERT INTO users (email, password, fullName) VALUES ($1, $2, $3)`,
-      [email, hashedPassword, fullName]
+      [email, hashedPassword, fullname]
     );
 
-    res.status(204).send();
+    res.sendStatus(204);
   } catch (e) {
     res.status(400).json(toErrorResponse(e));
   }
@@ -34,7 +34,7 @@ const signIn: RequestHandler = async (req, res) => {
 
   try {
     const user = await db.querySingle<
-      Pick<User, "id" | "fullName" | "password">
+      Pick<User, "id" | "fullname" | "password">
     >(`SELECT id, password FROM users WHERE email = $1`, [email]);
 
     if (!user) return res.status(401).send({ message: "Invalid credentials" });
@@ -43,7 +43,7 @@ const signIn: RequestHandler = async (req, res) => {
 
     if (matches) {
       const accessToken = generateAccessToken({ id: user?.id });
-      res.status(200).json({ accessToken });
+      res.json({ accessToken });
     } else {
       res.status(401).send({ message: "Invalid credentials" });
     }
