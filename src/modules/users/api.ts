@@ -30,7 +30,7 @@ const signUp: RequestHandler = async (req, res) => {
 };
 
 const signIn: RequestHandler = async (req, res) => {
-  const { email, password }: User = req.body;
+  const { email, password, client } = req.body;
 
   try {
     const user = await db.querySingle<
@@ -43,6 +43,13 @@ const signIn: RequestHandler = async (req, res) => {
 
     if (matches) {
       const accessToken = generateAccessToken({ id: user?.id });
+
+      if (client) {
+        return res
+          .cookie("accessToken", accessToken, { httpOnly: true })
+          .sendStatus(200);
+      }
+
       res.json({ accessToken });
     } else {
       res.status(401).send({ message: "Invalid credentials" });
