@@ -5,6 +5,7 @@ interface Post {
   status: string;
   body: string;
   createdon: string;
+  author?: string;
 }
 
 export { Post };

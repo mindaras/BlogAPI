@@ -5,7 +5,11 @@ import { Post } from "./models";
 
 const getAll: RequestHandler = async (_, res) => {
   try {
-    const data = await db.query(`SELECT * FROM posts;`);
+    const data = await db.query(
+      `SELECT p.id, p.title, p.status, p.body, p.createdon, p.updatedon, u.fullname as author 
+       FROM posts as p 
+       INNER JOIN users AS u ON u.id = p.userid;`
+    );
     res.json({ data });
   } catch (e) {
     res.status(500).json(toErrorResponse(e));
@@ -18,9 +22,12 @@ const get: RequestHandler = async (req, res) => {
   if (!id) return res.status(400).json({ message: "No id was provided" });
 
   try {
-    const post = await db.querySingle("SELECT * FROM posts WHERE id = $1", [
-      id,
-    ]);
+    const post = await db.querySingle(
+      `SELECT p.id, p.title, p.status, p.body, p.createdon, p.updatedon, u.fullname as author 
+       FROM posts AS p 
+       INNER JOIN users AS u ON u.id = p.userid WHERE p.id = $1;`,
+      [id]
+    );
 
     if (post) res.json(post);
     else {
@@ -38,8 +45,8 @@ const create: RequestHandler = async (req, res) => {
   try {
     const data = await db.querySingle(
       `INSERT INTO posts(title, body, userId) 
-      VALUES($1, $2, $3) 
-      RETURNING *, to_char(createdOn, 'YYYY-MM-DD') as createdOn;`,
+       VALUES($1, $2, $3) 
+       RETURNING *, to_char(createdOn, 'YYYY-MM-DD') as createdOn;`,
       [title, body, user?.id]
     );
 
@@ -73,9 +80,9 @@ const update: RequestHandler = async (req, res) => {
   try {
     const data = await db.querySingle<Post>(
       `UPDATE posts 
-      SET title = $1, body = $2, updatedOn = now() 
-      WHERE id = $3
-      RETURNING *, to_char(createdOn, 'YYYY-MM-DD') as createdOn, to_char(createdOn, 'YYYY-MM-DD') as updatedOn;`,
+       SET title = $1, body = $2, updatedOn = now() 
+       WHERE id = $3
+       RETURNING *, to_char(createdOn, 'YYYY-MM-DD') as createdOn, to_char(createdOn, 'YYYY-MM-DD') as updatedOn;`,
       [title, body, req.params.id]
     );
 
