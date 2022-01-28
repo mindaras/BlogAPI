@@ -15,7 +15,9 @@ const generateAccessToken = (user: Pick<User, "id">) =>
   jwt.sign(user, config.auth.tokenSecret, { expiresIn: "3600s" });
 
 const auth: RequestHandler = (req, res, next) => {
-  const token = req.headers["authorization"]?.split(" ")[1];
+  const token =
+    req.headers["authorization"]?.split(" ")[1] ||
+    (req.cookies?.accessToken as string);
 
   if (!token) return res.sendStatus(401);
 
