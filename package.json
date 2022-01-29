@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon",
-    "start:prod": "npm run build && node dist/index.js",
+    "start:prod": "npm run build && NODE_ENV=production ts-node-transpile-only -r tsconfig-paths/register dist/index.js",
     "build": "rimraf dist && tsc --build tsconfig.json",
     "migration:create": "db-migrate create",
     "migration:up": "db-migrate up",
@@ -34,7 +34,7 @@
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
+    "dotenv": "^14.3.2",
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.1"

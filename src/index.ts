@@ -12,6 +12,7 @@ const init = async () => {
   app.use(cookieParser());
   app.use("/api/users", usersApi);
   app.use("/api/posts", postsApi);
+  app.get("/test", (_, res) => res.send("hey"));
   app.listen(process.env.PORT, () =>
     console.log(`Listening on port: ${process.env.PORT}`)
   );

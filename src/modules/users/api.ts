@@ -1,11 +1,7 @@
+import { checkPassword, generateAccessToken, hashPassword } from "@auth/auth";
+import { toErrorResponse } from "@common/mappers";
+import { db } from "@db/client";
 import { Router, RequestHandler } from "express";
-import {
-  checkPassword,
-  generateAccessToken,
-  hashPassword,
-  toErrorResponse,
-} from "src/common";
-import { db } from "src/db/client";
 import { User } from "./models";
 
 const signUp: RequestHandler = async (req, res) => {

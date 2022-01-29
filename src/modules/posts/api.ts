@@ -1,6 +1,7 @@
+import { auth, parseAuthPayload } from "@auth/auth";
+import { toErrorResponse } from "@common/mappers";
+import { db } from "@db/client";
 import { Router, RequestHandler } from "express";
-import { auth, parseAuthPayload, toErrorResponse } from "src/common";
-import { db } from "src/db/client";
 import { Post } from "./models";
 
 const getAll: RequestHandler = async (_, res) => {

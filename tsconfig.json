@@ -11,7 +11,14 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@config/*": ["src/config/*"],
+      "@common/*": ["src/common/*"],
+      "@auth/*": ["src/auth/*"],
+      "@db/*": ["src/db/*"],
+      "@modules/*": ["src/modules/*"]
+    }
   },
-  "exclude": ["dist", "migrations", "src/**/*.js"]
+  "exclude": ["node_modules", "dist", "migrations", "src/**/*.js"]
 }

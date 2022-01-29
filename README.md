@@ -6,17 +6,32 @@ From your project directory:
 
 ## Run
 
-### Fire up the database
+### Production
 
+_Application_:
+`docker run -d --rm -p=8000:8000 --name=blog-api blog-api`
+
+_Database_:
 `docker run -d --rm --name blog-db -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword postgres`
 
-### Fire up the project
+### Development
 
+_Local_:
+`docker run -d --rm --name blog-db -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword postgres`
 `npm start`
 
-or
+🚀 _Fully containerized_ 🚀:
+`docker-compose rm -f`
+`docker-compose up --build -d`
+`docker exec -it blogapi_web_1 bash`
+`npm i`
+`npm run migration:up && npm start`
 
-`docker run -d --rm -p=8000:8000 --name=blog-api blog-api`
+To stop: `docker-compose stop`
+
+Code in your local environment and container will pickup the changes.
+
+Note: make npm installations in container environment since some dependencies are compiled differently on different OS.
 
 ## Migrations
 

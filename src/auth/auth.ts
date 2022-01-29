@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
-import { config } from "src/config/config";
 import jwt from "jsonwebtoken";
-import { User } from "src/modules/users/models";
 import { Request, RequestHandler } from "express";
 import { AuthenticatedRequest, JwtPayload } from "./model";
+import { config } from "@config/config";
+import { User } from "@modules/users/models";
 
 const hashPassword = async (password: string) =>
   bcrypt.hash(password, config.auth.saltRounds);
