@@ -8,19 +8,23 @@ From your project directory:
 
 ### Production
 
-_Application_:
+#### Application:
+
 `docker run -d --rm -p=8000:8000 --name=blog-api blog-api`
 
-_Database_:
+#### Database:
+
 `docker run -d --rm --name blog-db -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword postgres`
 
 ### Development
 
-_Local_:
+#### Local:
+
 `docker run -d --rm --name blog-db -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword postgres`
 `npm start`
 
-🚀 _Fully containerized_ 🚀:
+#### Fully containerized 🚀:
+
 `docker-compose rm -f`
 `docker-compose up --build -d`
 `docker exec -it blogapi_web_1 bash`
