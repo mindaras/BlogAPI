@@ -20,16 +20,16 @@ From your project directory:
 
 #### Local:
 
-`docker run -d --rm --name blog-db -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword postgres`
+`docker run -d --rm --name blog-db -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword postgres` <br />
 `npm start`
 
 #### Fully containerized 🚀:
 
-`docker-compose rm -f`
-`docker-compose up --build -d`
-`docker exec -it blogapi_web_1 bash`
-`npm i`
-`npm run migration:up && npm start`
+`docker-compose rm -f` <br />
+`docker-compose up --build -d` <br />
+`docker exec -it blogapi_web_1 bash` <br />
+`npm i` <br />
+`npm run migration:up && npm start` <br />
 
 To stop: `docker-compose stop`
 
