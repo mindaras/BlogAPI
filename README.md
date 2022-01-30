@@ -81,7 +81,6 @@ Note: make npm installations in container environment since some dependencies ar
 
 `[GET]: http://mindaugaslazauskas.com/api/posts` <br />
 `[GET]: http://mindaugaslazauskas.com/api/posts/{id}` <br />
-`[GET]: http://mindaugaslazauskas.com/api/posts/{id}` <br />
 `[POST]: http://mindaugaslazauskas.com/api/posts` <br />
 {
 "title": string
