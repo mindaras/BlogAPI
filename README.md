@@ -14,7 +14,7 @@ From your project directory:
 
 #### Database:
 
-`docker run -d --rm --restart unless-stopped --name blog-db -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword postgres`
+`docker run -d --restart unless-stopped --name blog-db -p 5432:5432 -e POSTGRES_DB=blog -e POSTGRES_PASSWORD=mysecretpassword postgres `
 
 ### Development
 
