@@ -8,13 +8,13 @@ From your project directory:
 
 ### Production
 
-#### Application:
-
-`docker run -d --rm -p=8000:8000 --name=blog-api blog-api`
-
 #### Database:
 
 `docker run -d --restart unless-stopped --name blog-db -p 5432:5432 -e POSTGRES_DB=blog -e POSTGRES_PASSWORD=mysecretpassword postgres`
+
+#### Application:
+
+`docker run -d --restart unless-stopped -p=8000:8000 --name=blog-api blog-api`
 
 ### Development
 

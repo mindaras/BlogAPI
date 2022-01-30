@@ -105,7 +105,7 @@ const remove: RequestHandler = async (req, res) => {
 const postsApi = Router()
   .get("/", getAll)
   .get("/:id", get)
-  .post("/", auth, checkOwnership, create)
+  .post("/", auth, create)
   .put("/:id", auth, checkOwnership, update)
   .delete("/:id", auth, checkOwnership, remove);
 
