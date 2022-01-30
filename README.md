@@ -14,7 +14,7 @@ From your project directory:
 
 #### Application:
 
-`docker run -d --restart unless-stopped -p=8000:8000 --name=blog-api blog-api`
+`docker run -d --restart unless-stopped -p=8000:8000 -e PORT=8000 -e TOKEN_SECRET=secret -e DB_USER=user -e DB_HOST=host -e DB=blog -e DB_PASSWORD=password -e DB_PORT=5432 --name=blog-api blog-api`
 
 ### Development
 
