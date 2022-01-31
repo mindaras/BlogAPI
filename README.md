@@ -93,4 +93,9 @@ Note: make npm installations in container environment since some dependencies ar
 "body": string
 }
 
+`[PUT]: https://mindaugaslazauskas.com/api/posts/{id}/status` <br />
+{
+"status": POST_STATUS ("DRAFT" | "PUBLISHED")
+}
+
 `[DELETE]: https://mindaugaslazauskas.com/api/posts/{id}`
