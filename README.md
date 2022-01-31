@@ -44,7 +44,7 @@ To stop: `docker-compose stop`
 
 Code in your local environment and container will pickup the changes.
 
-Note: make npm installations in container environment since some dependencies are compiled differently on different OS.
+Note: make npm installations in the container environment since some dependencies are compiled differently on different OS.
 
 ## Migrations
 
