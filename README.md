@@ -22,10 +22,10 @@ From your project directory:
 
 <strong>db</strong>:
 
-with data persistence:
+With data persistence:
 `docker run -d --rm --name blog-db --mount type=volume,src=data,target=/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword postgres` <br />
 
-without data persistence:
+Without data persistence:
 `docker run -d --rm --name blog-db -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword postgres` <br />
 
 <strong>app</strong>:
@@ -59,6 +59,12 @@ Note: make npm installations in container environment since some dependencies ar
 ### Revert last migration
 
 `npm run migration:down`
+
+## Testing
+
+Startup the database: `docker run -d --rm --name blog-db -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword postgres`
+
+Run: `npm test`
 
 ## Endpoints
 
@@ -95,7 +101,7 @@ Note: make npm installations in container environment since some dependencies ar
 
 `[PUT]: https://mindaugaslazauskas.com/api/posts/{id}/status` <br />
 {
-"status": POST_STATUS ("DRAFT" | "PUBLISHED")
+"status": "DRAFT" | "PUBLISHED"
 }
 
 `[DELETE]: https://mindaugaslazauskas.com/api/posts/{id}`

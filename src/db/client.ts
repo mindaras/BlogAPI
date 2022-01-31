@@ -16,6 +16,6 @@ const querySingle = async <T = any>(
   return response?.rows?.[0] as T;
 };
 
-const db = { pool, query, querySingle };
+const db = { query, querySingle };
 
 export { db };

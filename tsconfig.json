@@ -20,5 +20,5 @@
       "@modules/*": ["src/modules/*"]
     }
   },
-  "exclude": ["node_modules", "dist", "migrations", "src/**/*.js"]
+  "exclude": ["node_modules", "dist", "migrations", "tests"]
 }
