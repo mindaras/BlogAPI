@@ -76,6 +76,7 @@ const checkOwnership: RequestHandler = async (req, res, next) => {
 };
 
 const update: RequestHandler = async (req, res) => {
+  const { id } = req.params;
   const { title, body }: Post = req.body;
 
   try {
@@ -84,7 +85,24 @@ const update: RequestHandler = async (req, res) => {
        SET title = $1, body = $2, updatedOn = now() 
        WHERE id = $3
        RETURNING *, to_char(createdOn, 'YYYY-MM-DD') as createdOn, to_char(createdOn, 'YYYY-MM-DD') as updatedOn;`,
-      [title, body, req.params.id]
+      [title, body, id]
+    );
+
+    res.json({ data });
+  } catch (e) {
+    res.status(400).json(toErrorResponse(e));
+  }
+};
+
+const updateStatus: RequestHandler = async (req, res) => {
+  const { id } = req.params;
+  const { status }: Post = req.body;
+
+  try {
+    const data = await db.querySingle<Post>(
+      `UPDATE posts SET status = $1 WHERE id = $2
+       RETURNING *, to_char(createdOn, 'YYYY-MM-DD') as createdOn, to_char(createdOn, 'YYYY-MM-DD') as updatedOn;`,
+      [status, id]
     );
 
     res.json({ data });
@@ -107,6 +125,7 @@ const postsApi = Router()
   .get("/:id", get)
   .post("/", auth, create)
   .put("/:id", auth, checkOwnership, update)
+  .put("/:id/status", auth, checkOwnership, updateStatus)
   .delete("/:id", auth, checkOwnership, remove);
 
 export { postsApi };
