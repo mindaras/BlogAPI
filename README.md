@@ -64,14 +64,14 @@ Note: make npm installations in container environment since some dependencies ar
 
 <strong>Auth</strong>:
 
-`[POST]: http://mindaugaslazauskas.com/api/auth/signup` <br />
+`[POST]: https://mindaugaslazauskas.com/api/auth/signup` <br />
 {
 "email": string,
 "password": string,
 "fullname": string
 }
 
-`[POST]: http://mindaugaslazauskas.com/api/auth/signin` <br />
+`[POST]: https://mindaugaslazauskas.com/api/auth/signin` <br />
 {
 "email": string,
 "password": string,
@@ -79,18 +79,18 @@ Note: make npm installations in container environment since some dependencies ar
 
 <strong>Posts</strong>:
 
-`[GET]: http://mindaugaslazauskas.com/api/posts` <br />
-`[GET]: http://mindaugaslazauskas.com/api/posts/{id}` <br />
-`[POST]: http://mindaugaslazauskas.com/api/posts` <br />
+`[GET]: https://mindaugaslazauskas.com/api/posts` <br />
+`[GET]: https://mindaugaslazauskas.com/api/posts/{id}` <br />
+`[POST]: https://mindaugaslazauskas.com/api/posts` <br />
 {
 "title": string
 "body": string
 }
 
-`[PUT]: http://mindaugaslazauskas.com/api/posts/{id}` <br />
+`[PUT]: https://mindaugaslazauskas.com/api/posts/{id}` <br />
 {
 "title": string
 "body": string
 }
 
-`[DELETE]: http://mindaugaslazauskas.com/api/posts/{id}`
+`[DELETE]: https://mindaugaslazauskas.com/api/posts/{id}`
