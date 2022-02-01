@@ -7,7 +7,7 @@
     "start": "nodemon",
     "start:prod": "npm run build && NODE_ENV=production ts-node-transpile-only -r tsconfig-paths/register dist/index.js",
     "build": "rimraf dist && tsc --build tsconfig.json",
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register ts-node-transpile-only -r tsconfig-paths/register tests/**/*.ts",
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register ts-node-transpile-only -r tsconfig-paths/register tests/**/*.test.ts",
     "migration:create": "db-migrate create",
     "migration:up": "db-migrate up",
     "migration:down": "db-migrate down"

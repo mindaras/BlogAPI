@@ -23,10 +23,14 @@ From your project directory:
 <strong>db</strong>:
 
 With data persistence:
-`docker run -d --rm --name blog-db --mount type=volume,src=data,target=/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword postgres` <br />
+`docker run -d --rm --name blog-db --mount type=volume,src=data,target=/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_DB=blog -e POSTGRES_PASSWORD=mysecretpassword postgres` <br />
 
 Without data persistence:
-`docker run -d --rm --name blog-db -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword postgres` <br />
+`docker run -d --rm --name blog-db -p 5432:5432 -e POSTGRES_DB=blog -e POSTGRES_PASSWORD=mysecretpassword postgres` <br />
+
+<strong>redis</strong>
+
+`docker run --rm -d -p 6379:6379 --name blog-redis redis redis-server --save 60 1 --loglevel warning`
 
 <strong>app</strong>:
 
@@ -48,7 +52,7 @@ Note: make npm installations in the container environment since some dependencie
 
 ## Migrations
 
-### Create
+### Createg
 
 `npm run migration:create migrationname -- --sql-file`
 
