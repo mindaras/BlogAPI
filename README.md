@@ -12,6 +12,10 @@ From your project directory:
 
 `docker run -d --restart unless-stopped --name blog-db -p 5432:5432 -e POSTGRES_DB=blog -e POSTGRES_PASSWORD=mysecretpassword postgres`
 
+#### Cache:
+
+`docker run -d --restart unless-stopped -p 6379:6379 --name blog-redis redis redis-server --requirepass mysecretpassword --save 60 1 --loglevel warning`
+
 #### Application:
 
 `docker run -d --restart unless-stopped -p=8000:8000 -e PORT=8000 -e TOKEN_SECRET=secret -e DB_USER=user -e DB_HOST=host -e DB=blog -e DB_PASSWORD=password -e DB_PORT=5432 --name=blog-api blog-api`
@@ -23,14 +27,14 @@ From your project directory:
 <strong>db</strong>:
 
 With data persistence:
-`docker run -d --rm --name blog-db --mount type=volume,src=data,target=/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_DB=blog -e POSTGRES_PASSWORD=mysecretpassword postgres` <br />
+`docker run -d --rm --name blog-db --mount type=volume,src=data,target=/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_DB=blog -e POSTGRES_PASSWORD=mysecretpassword postgres`
 
 Without data persistence:
-`docker run -d --rm --name blog-db -p 5432:5432 -e POSTGRES_DB=blog -e POSTGRES_PASSWORD=mysecretpassword postgres` <br />
+`docker run -d --rm --name blog-db -p 5432:5432 -e POSTGRES_DB=blog -e POSTGRES_PASSWORD=mysecretpassword postgres`
 
 <strong>redis</strong>
 
-`docker run --rm -d -p 6379:6379 --name blog-redis redis redis-server --save 60 1 --loglevel warning`
+`docker run --rm -d -p 6379:6379 --name blog-redis redis redis-server --requirepass mysecretpassword`
 
 <strong>app</strong>:
 
@@ -38,13 +42,12 @@ Without data persistence:
 
 #### Fully containerized 🚀:
 
-`docker-compose rm -f` <br />
 `docker-compose up --build -d` <br />
 `docker exec -it blogapi_web_1 bash` <br />
 `npm i` <br />
-`npm run migration:up && npm start` <br />
+`npm run migration:up && npm start`
 
-To stop: `docker-compose stop`
+To stop: `docker-compose stop && docker-compose rm -f`
 
 Code in your local environment and container will pickup the changes.
 
@@ -74,14 +77,14 @@ Run: `npm test`
 
 <strong>Auth</strong>:
 
-`[POST]: https://mindaugaslazauskas.com/api/auth/signup` <br />
+`[POST]: https://mindaugaslazauskas.com/api/auth/signup`
 {
 "email": string,
 "password": string,
 "fullname": string
 }
 
-`[POST]: https://mindaugaslazauskas.com/api/auth/signin` <br />
+`[POST]: https://mindaugaslazauskas.com/api/auth/signin`
 {
 "email": string,
 "password": string,
@@ -91,19 +94,19 @@ Run: `npm test`
 
 `[GET]: https://mindaugaslazauskas.com/api/posts` <br />
 `[GET]: https://mindaugaslazauskas.com/api/posts/{id}` <br />
-`[POST]: https://mindaugaslazauskas.com/api/posts` <br />
+`[POST]: https://mindaugaslazauskas.com/api/posts`
 {
 "title": string
 "body": string
 }
 
-`[PUT]: https://mindaugaslazauskas.com/api/posts/{id}` <br />
+`[PUT]: https://mindaugaslazauskas.com/api/posts/{id}`
 {
 "title": string
 "body": string
 }
 
-`[PUT]: https://mindaugaslazauskas.com/api/posts/{id}/status` <br />
+`[PUT]: https://mindaugaslazauskas.com/api/posts/{id}/status`
 {
 "status": "DRAFT" | "PUBLISHED"
 }

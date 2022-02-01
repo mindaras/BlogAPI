@@ -4,7 +4,6 @@ services:
     build:
       context: .
       dockerfile: ./dev.Dockerfile
-    command: tail -F /dev/null
     ports:
       - "8000:8000"
     volumes:
@@ -12,6 +11,8 @@ services:
       - /usr/app/node_modules/
     links:
       - db
+      - cache
+    command: tail -F /dev/null
     environment:
       PORT: 8000
       TOKEN_SECRET: 724b110eced76bf20851e0187bbbc180mdore4c6e3b0771ae76eb6244537a969b2f777be433cc9ce40c202607d4defb1b3d4a0223388e5630b6beaa0f52e6a76
@@ -20,6 +21,8 @@ services:
       DB: blog
       DB_PASSWORD: mysecretpassword
       DB_PORT: 5432
+      CACHE_HOST: cache
+      CACHE_PORT: 6379
   db:
     image: postgres:14
     ports:
@@ -27,3 +30,10 @@ services:
     environment:
       POSTGRES_DB: "blog"
       POSTGRES_PASSWORD: mysecretpassword
+  cache:
+    image: redis:6
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./cacheVolume:/data
+    command: redis-server --requirepass mysecretpassword --save 60 1 --loglevel warning

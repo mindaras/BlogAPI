@@ -5,7 +5,6 @@ import {
   hashPassword,
   verifyToken,
 } from "@auth/auth";
-import { JwtPayload, TokenType } from "@auth/model";
 import { toErrorResponse } from "@common/mappers";
 import { db } from "@db/client";
 import { getCacheClient } from "@db/cache";
@@ -51,7 +50,7 @@ const signIn: RequestHandler = async (req, res) => {
         .send({ message: "Invalid credentials or user doesn't exist" });
     }
 
-    const { token: accessToken } = generateToken({ id: user?.id });
+    const accessToken = generateToken({ id: user?.id });
     const refreshToken = await createAndCacheRefreshToken(user?.id);
 
     if (client) {
@@ -83,7 +82,7 @@ const refresh: RequestHandler = async (req, res) => {
       return res.status(401).send({ message: "Invalid token" });
     }
 
-    const { token: accessToken } = generateToken({ id: user?.id });
+    const accessToken = generateToken({ id: user?.id });
     const newRefreshToken = await createAndCacheRefreshToken(user?.id);
 
     if (client) {

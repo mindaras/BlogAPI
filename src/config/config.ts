@@ -7,10 +7,16 @@ const env = process.env as { [key: string]: string };
 const config = {
   db: {
     user: env.DB_USER,
-    host: env.DB_HOST,
-    database: env.DB,
     password: env.DB_PASSWORD,
+    host: env.DB_HOST,
     port: parseInt(env.DB_PORT),
+    database: env.DB,
+  },
+  cache: {
+    user: env.CACHE_USER,
+    password: env.CACHE_PASSWORD,
+    host: env.CACHE_HOST,
+    port: parseInt(env.CACHE_PORT),
   },
   auth: {
     saltRounds: 10,

@@ -1,6 +1,10 @@
+import { config } from "@config/config";
 import { createClient } from "redis";
 
-const client = createClient();
+const { user, password, host, port } = config.cache;
+const client = createClient({
+  url: `redis://${user}:${password}@${host}:${port}`,
+});
 
 client.on("error", (err) => console.error("Redis error:", err));
 

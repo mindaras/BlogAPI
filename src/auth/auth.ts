@@ -17,17 +17,10 @@ interface GenerateJwtArgs {
 }
 
 const generateToken = ({ id, type = TokenType.Access }: GenerateJwtArgs) => {
-  const isAccessType = type === TokenType.Access;
   const expiresIn =
     type === TokenType.Access ? "3600s" /* 1 hour */ : `${3600 * 48}s`;
   const token = jwt.sign({ id }, config.auth.tokenSecret, { expiresIn });
-
-  if (!isAccessType) {
-    const payload = jwt.decode(token) as JwtPayload;
-    return { token, payload };
-  }
-
-  return { token };
+  return token;
 };
 
 interface VerifyTokenPayload {
@@ -67,19 +60,9 @@ const auth: RequestHandler = async (req, res, next) => {
 const parseAuthPayload = (req: Request) => (req as AuthenticatedRequest)?.user;
 
 const createAndCacheRefreshToken = async (id: string) => {
-  const { token, payload } = generateToken({ id: id, type: TokenType.Refresh });
-  const tokenExpiration = (payload as JwtPayload).exp * 1000;
+  const token = generateToken({ id: id, type: TokenType.Refresh });
   const cache = await getCacheClient();
-
-  await Promise.all([
-    cache.hSet(`users:${id}`, `refreshToken`, token),
-    cache.hSet(
-      `users:${id}`,
-      `refreshTokenExpiration`,
-      tokenExpiration // for old token cleanup
-    ),
-  ]);
-
+  await cache.hSet(`users:${id}`, `refreshToken`, token);
   return token;
 };
 
