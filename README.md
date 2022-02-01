@@ -14,7 +14,7 @@ From your project directory:
 
 #### Cache:
 
-`docker run -d --restart unless-stopped --mount type=volume,src=cacheVolume,target=/data -p 6379:6379 --name blog-redis redis redis-server --requirepass mysecretpassword --save 60 1 --loglevel warning`
+`docker run -d --restart unless-stopped --mount type=volume,src=cacheVolume,target=/data -p 6379:6379 --name blog-redis redis --requirepass mysecretpassword redis-server --save 60 1 --loglevel warning`
 
 #### Application:
 
@@ -34,7 +34,7 @@ Without data persistence:
 
 <strong>redis</strong>
 
-`docker run --rm -d -p 6379:6379 --name blog-redis redis redis-server --requirepass mysecretpassword`
+`docker run --rm -d -p 6379:6379 --name blog-redis redis --requirepass mysecretpassword`
 
 <strong>app</strong>:
 
