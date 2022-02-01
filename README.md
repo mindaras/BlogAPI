@@ -15,7 +15,7 @@ From your project directory:
 #### Cache:
 
 `mkdir cacheVolume` <br />
-`docker run -d --restart unless-stopped --mount type=volume,src=cacheVolume,target=/data -p 6379:6379 --name blog-redis redis --requirepass mysecretpassword redis-server --save 60 1 --loglevel warning`
+`docker run -d --restart unless-stopped --mount type=volume,src=cacheVolume,target=/data -p 6379:6379 --name blog-redis redis redis-server --requirepass mysecretpassword --save 60 1 --loglevel warning`
 
 #### Application:
 
