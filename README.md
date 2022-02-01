@@ -10,15 +10,15 @@ From your project directory:
 
 #### Database:
 
-`docker run -d --restart unless-stopped --name blog-db -p 5432:5432 -e POSTGRES_DB=blog -e POSTGRES_PASSWORD=mysecretpassword postgres`
+`docker run -d --restart unless-stopped --name blog-db --mount type=volume,src=data,target=/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_DB=blog -e POSTGRES_PASSWORD=mysecretpassword postgres`
 
 #### Cache:
 
-`docker run -d --restart unless-stopped -p 6379:6379 --name blog-redis redis redis-server --requirepass mysecretpassword --save 60 1 --loglevel warning`
+`docker run -d --restart unless-stopped --mount type=volume,src=cacheVolume,target=/data -p 6379:6379 --name blog-redis redis redis-server --requirepass mysecretpassword --save 60 1 --loglevel warning`
 
 #### Application:
 
-`docker run -d --restart unless-stopped -p=8000:8000 -e PORT=8000 -e TOKEN_SECRET=secret -e DB_USER=user -e DB_HOST=host -e DB=blog -e DB_PASSWORD=password -e DB_PORT=5432 --name=blog-api blog-api`
+`docker run -d --restart unless-stopped -p=8000:8000 -e PORT=8000 -e TOKEN_SECRET=secret -e DB_USER=user -e DB_HOST=host -e DB=blog -e DB_PASSWORD=mysecretpassword -e DB_PORT=5432 --name=blog-api blog-api`
 
 ### Development
 
