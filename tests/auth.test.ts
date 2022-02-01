@@ -4,7 +4,7 @@ import { Express } from "express";
 import { mockDb } from "./common/mockDb";
 import { db } from "../src/db/client";
 
-describe("Users API", () => {
+describe("Auth API", () => {
   let app: Express;
 
   before("Mock db connection and load app", async () => {
@@ -24,14 +24,14 @@ describe("Users API", () => {
       DROP TABLE IF EXISTS pg_temp.users`);
   });
 
-  it("POST /api/users/signup", async () => {
+  it("POST /api/auth/signup", async () => {
     const req = {
       email: "mind.lazauskas@gmail.com",
       password: "hellohello",
       fullname: "Mindaugas Lazauskas",
     };
 
-    await request(app).post("/api/users/signup").send(req).expect(204);
+    await request(app).post("/api/auth/signup").send(req).expect(204);
 
     const user = await db.querySingle(
       "SELECT email, password, fullname FROM users WHERE email = $1",
@@ -43,17 +43,17 @@ describe("Users API", () => {
     expect(user.password).lengthOf(60);
   });
 
-  it("POST /api/users/signin", async () => {
+  it("POST /api/auth/signin", async () => {
     const req = {
       email: "mind.lazauskas@gmail.com",
       password: "hellohello",
       fullname: "Mindaugas Lazauskas",
     };
 
-    await request(app).post("/api/users/signup").send(req).expect(204);
+    await request(app).post("/api/auth/signup").send(req).expect(204);
 
     const response = await request(app)
-      .post("/api/users/signin")
+      .post("/api/auth/signin")
       .send({ email: req.email, password: req.password })
       .expect(200);
 

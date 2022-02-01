@@ -10,4 +10,9 @@ interface AuthenticatedRequest extends Request {
   user: JwtPayload;
 }
 
-export { JwtPayload, AuthenticatedRequest };
+enum TokenType {
+  Access = "Access",
+  Refresh = "Refresh",
+}
+
+export { JwtPayload, AuthenticatedRequest, TokenType };
