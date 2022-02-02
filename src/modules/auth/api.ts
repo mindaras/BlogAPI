@@ -98,9 +98,9 @@ const refresh: RequestHandler = async (req, res) => {
   }
 };
 
-const usersApi = Router()
+const authApi = Router()
   .post("/signup", signUp)
   .post("/signin", signIn)
   .post("/refresh", refresh);
 
-export { usersApi };
+export { authApi };
