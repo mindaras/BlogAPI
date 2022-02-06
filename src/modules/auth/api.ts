@@ -22,7 +22,7 @@ const signUp: RequestHandler = async (req, res) => {
     const hashedPassword = await hashPassword(password);
 
     await db.query(
-      `INSERT INTO users (email, password, fullName) VALUES ($1, $2, $3)`,
+      `INSERT INTO users (email, password, fullname) VALUES ($1, $2, $3)`,
       [email, hashedPassword, fullname]
     );
 
