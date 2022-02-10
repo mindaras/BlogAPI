@@ -3,8 +3,9 @@ interface User {
   email: string;
   password: string;
   fullname: string;
-  about?: string;
   createdon: string;
+  about?: string;
+  avatar?: string;
 }
 
 export { User };
