@@ -44,14 +44,14 @@ const create: RequestHandler = async (req, res) => {
   const user = parseAuthPayload(req);
 
   try {
-    const data = await db.querySingle(
+    const post = await db.querySingle(
       `INSERT INTO posts(title, body, userId) 
        VALUES($1, $2, $3) 
        RETURNING *, to_char(createdOn, 'YYYY-MM-DD') as createdOn;`,
       [title, body, user?.id]
     );
 
-    res.json({ data });
+    res.json(post);
   } catch (e) {
     res.status(400).json(toErrorResponse(e));
   }
@@ -80,7 +80,7 @@ const update: RequestHandler = async (req, res) => {
   const { title, body }: Post = req.body;
 
   try {
-    const data = await db.querySingle<Post>(
+    const post = await db.querySingle<Post>(
       `UPDATE posts 
        SET title = $1, body = $2, updatedOn = now() 
        WHERE id = $3
@@ -88,7 +88,7 @@ const update: RequestHandler = async (req, res) => {
       [title, body, id]
     );
 
-    res.json({ data });
+    res.json(post);
   } catch (e) {
     res.status(400).json(toErrorResponse(e));
   }
@@ -99,13 +99,13 @@ const updateStatus: RequestHandler = async (req, res) => {
   const { status }: Post = req.body;
 
   try {
-    const data = await db.querySingle<Post>(
+    const post = await db.querySingle<Post>(
       `UPDATE posts SET status = $1 WHERE id = $2
        RETURNING *, to_char(createdOn, 'YYYY-MM-DD') as createdOn, to_char(createdOn, 'YYYY-MM-DD') as updatedOn;`,
       [status, id]
     );
 
-    res.json({ data });
+    res.json(post);
   } catch (e) {
     res.status(400).json(toErrorResponse(e));
   }

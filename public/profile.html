@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+  </head>
+  <body>
+    <div id="container"></div>
+    <div id="avatar"></div>
+
+    <script>
+      const container = document.getElementById("container");
+
+      const getUser = async () => {
+        const response = await fetch(`/api/users${window.location.search}`);
+        const data = await response.json();
+        container.innerHTML = `
+          <h1>${data.fullname}</h1>
+          <span>${data.email}</span>
+        `;
+      };
+
+      getUser();
+    </script>
+  </body>
+</html>

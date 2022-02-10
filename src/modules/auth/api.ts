@@ -9,7 +9,7 @@ import { toErrorResponse } from "@common/mappers";
 import { db } from "@db/client";
 import { getCacheClient } from "@db/cache";
 import { Router, RequestHandler } from "express";
-import { User } from "./models";
+import { User } from "@common/models";
 
 const signUp: RequestHandler = async (req, res) => {
   const { email, password, fullname }: User = req.body;
