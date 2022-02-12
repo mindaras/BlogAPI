@@ -19,7 +19,7 @@ From your project directory:
 
 #### Application:
 
-`docker run -d --restart unless-stopped -p=8000:8000 -e PORT=8000 -e TOKEN_SECRET=secret -e DB_USER=user -e DB_HOST=host -e DB=blog -e DB_PASSWORD=mysecretpassword -e DB_PORT=5432 AWS_ACCESS_KEY_ID=ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=SECRET_ACCESS_KEY AWS_BUCKET_NAME=blog-avatars AWS_REGION=eu-central-1 --name=blog-api blog-api`
+`docker run -d --restart unless-stopped -p=8000:8000 -e PORT=8000 -e TOKEN_SECRET=secret -e DB_USER=user -e DB_HOST=host -e DB=blog -e DB_PASSWORD=mysecretpassword -e DB_PORT=5432 -e CACHE_USER=user -e CACHE_PASSWORD=mysecretpassword -e CACHE_HOST=host -e CACHE_PORT=6379 -e AWS_ACCESS_KEY_ID=accessKeyId -e AWS_SECRET_ACCESS_KEY=secretAccessKey -e AWS_BUCKET_NAME=blog-avatars -e AWS_REGION=eu-central-1 --name=blog-api blog-api`
 
 ### Development
 
