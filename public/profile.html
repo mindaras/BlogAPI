@@ -8,7 +8,6 @@
   </head>
   <body>
     <div id="container"></div>
-    <div id="avatar"></div>
 
     <script>
       const container = document.getElementById("container");
@@ -18,8 +17,49 @@
         const data = await response.json();
         container.innerHTML = `
           <h1>${data.fullname}</h1>
-          <span>${data.email}</span>
+          <h3>${data.email}</h3>
+          ${
+            data.avatar
+              ? `
+                  <img src="${data.avatar}" width="200" height="200" />
+                  <button id="remove-avatar">Remove</button>
+                  `
+              : `
+            <form id="avatar-form">
+              <label>Upload avatar</label>
+              <input id="avatar" type="file" style="display: block;" />
+              <button>submit</button>
+            </form>
+          `
+          }
         `;
+
+        const uploadAvatar = async (e) => {
+          e.preventDefault();
+          const file = document.getElementById("avatar").files[0];
+          const form = new FormData();
+          form.append("file", file);
+
+          await fetch("/api/users/avatar-upload", {
+            method: "POST",
+            body: form,
+          });
+
+          window.location.reload();
+        };
+
+        const avatarForm = document.getElementById("avatar-form");
+
+        if (avatarForm) avatarForm.onsubmit = uploadAvatar;
+
+        const removeAvatar = async () => {
+          await fetch("/api/users/avatar-remove", { method: "DELETE" });
+          window.location.reload();
+        };
+
+        const removeAvatarButton = document.getElementById("remove-avatar");
+
+        if (removeAvatarButton) removeAvatarButton.onclick = removeAvatar;
       };
 
       getUser();

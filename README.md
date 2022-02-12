@@ -19,7 +19,7 @@ From your project directory:
 
 #### Application:
 
-`docker run -d --restart unless-stopped -p=8000:8000 -e PORT=8000 -e TOKEN_SECRET=secret -e DB_USER=user -e DB_HOST=host -e DB=blog -e DB_PASSWORD=mysecretpassword -e DB_PORT=5432 NODE_ENV=production --name=blog-api blog-api`
+`docker run -d --restart unless-stopped -p=8000:8000 -e PORT=8000 -e TOKEN_SECRET=secret -e DB_USER=user -e DB_HOST=host -e DB=blog -e DB_PASSWORD=mysecretpassword -e DB_PORT=5432 AWS_ACCESS_KEY_ID=ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=SECRET_ACCESS_KEY AWS_BUCKET_NAME=blog-avatars AWS_REGION=eu-central-1 NODE_ENV=production --name=blog-api blog-api`
 
 ### Development
 
@@ -113,3 +113,13 @@ Run: `npm test`
 }
 
 `[DELETE]: https://mindaugaslazauskas.com/api/posts/{id}`
+
+<strong>Users</strong>:
+
+`[GET]: https://mindaugaslazauskas.com/api/users`
+`[POST]: https://mindaugaslazauskas.com/api/users/avatar-upload`
+Encoding: multipart/form-data
+{
+"file": File
+}
+`[DELETE]: https://mindaugaslazauskas.com/api/users/avatar-remove`

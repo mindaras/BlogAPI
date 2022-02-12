@@ -4,6 +4,7 @@ import { Request, RequestHandler } from "express";
 import { AuthenticatedRequest, JwtPayload, TokenType } from "./model";
 import { config } from "@config/config";
 import { getCacheClient } from "@db/cache";
+import { toErrorResponse } from "@common/mappers";
 
 const hashPassword = async (password: string) =>
   bcrypt.hash(password, config.auth.saltRounds);
@@ -25,18 +26,13 @@ const generateToken = ({ id, type = TokenType.Access }: GenerateJwtArgs) => {
 
 interface VerifyTokenPayload {
   user: JwtPayload;
-  error: string;
 }
 
 const verifyToken = (token: string): Promise<VerifyTokenPayload> => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, config.auth.tokenSecret, (error, user) => {
-      if (error) {
-        console.error(error);
-        reject({ error });
-      } else {
-        resolve({ user } as VerifyTokenPayload);
-      }
+      if (error) reject(error);
+      else resolve({ user } as VerifyTokenPayload);
     });
   });
 };
@@ -48,13 +44,14 @@ const auth: RequestHandler = async (req, res, next) => {
 
   if (!token) return res.sendStatus(401);
 
-  const { user, error } = await verifyToken(token);
+  try {
+    const { user } = await verifyToken(token);
+    (req as AuthenticatedRequest).user = user as JwtPayload;
 
-  if (error) return res.sendStatus(403);
-
-  (req as AuthenticatedRequest).user = user as JwtPayload;
-
-  next();
+    next();
+  } catch (e) {
+    res.status(401).send(toErrorResponse(e));
+  }
 };
 
 const parseAuthPayload = (req: Request) => (req as AuthenticatedRequest)?.user;

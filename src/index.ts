@@ -5,6 +5,7 @@ import { authApi } from "./modules/auth/api";
 import cookieParser from "cookie-parser";
 import { urlencoded } from "body-parser";
 import { usersApi } from "@modules/users/api";
+import { auth } from "@auth/auth";
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static("./public"));
 app.use("/api/auth", authApi);
-app.use("/api/users", usersApi);
+app.use("/api/users", auth, usersApi);
 app.use("/api/posts", postsApi);
 app.listen(process.env.PORT, () =>
   console.log(`Listening on port: ${process.env.PORT}`)

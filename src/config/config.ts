@@ -22,6 +22,13 @@ const config = {
     saltRounds: 10,
     tokenSecret: env.TOKEN_SECRET,
   },
+  aws: {
+    accessKeyId: env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+    bucketName: env.AWS_BUCKET_NAME,
+    bucketUrl: `https://${env.AWS_BUCKET_NAME}.s3.${env.AWS_REGION}.amazonaws.com/`,
+    region: env.AWS_REGION,
+  },
 };
 
 export { config };
