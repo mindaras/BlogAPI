@@ -19,7 +19,7 @@ From your project directory:
 
 #### Application:
 
-`docker run -d --restart unless-stopped -p=8000:8000 -e PORT=8000 -e TOKEN_SECRET=secret -e DB_USER=user -e DB_HOST=host -e DB=blog -e DB_PASSWORD=mysecretpassword -e DB_PORT=5432 AWS_ACCESS_KEY_ID=ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=SECRET_ACCESS_KEY AWS_BUCKET_NAME=blog-avatars AWS_REGION=eu-central-1 NODE_ENV=production --name=blog-api blog-api`
+`docker run -d --restart unless-stopped -p=8000:8000 -e PORT=8000 -e TOKEN_SECRET=secret -e DB_USER=user -e DB_HOST=host -e DB=blog -e DB_PASSWORD=mysecretpassword -e DB_PORT=5432 AWS_ACCESS_KEY_ID=ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=SECRET_ACCESS_KEY AWS_BUCKET_NAME=blog-avatars AWS_REGION=eu-central-1 --name=blog-api blog-api`
 
 ### Development
 
@@ -78,14 +78,14 @@ Run: `npm test`
 
 <strong>Auth</strong>:
 
-`[POST]: https://mindaugaslazauskas.com/api/auth/signup`
+`[POST]: http://localhost:8000/api/auth/signup`
 {
 "email": string,
 "password": string,
 "fullname": string
 }
 
-`[POST]: https://mindaugaslazauskas.com/api/auth/signin`
+`[POST]: http://localhost:8000/api/auth/signin`
 {
 "email": string,
 "password": string,
@@ -93,33 +93,33 @@ Run: `npm test`
 
 <strong>Posts</strong>:
 
-`[GET]: https://mindaugaslazauskas.com/api/posts` <br />
-`[GET]: https://mindaugaslazauskas.com/api/posts/{id}` <br />
-`[POST]: https://mindaugaslazauskas.com/api/posts`
+`[GET]: http://localhost:8000/api/posts` <br />
+`[GET]: http://localhost:8000/api/posts/{id}` <br />
+`[POST]: http://localhost:8000/api/posts`
 {
 "title": string
 "body": string
 }
 
-`[PUT]: https://mindaugaslazauskas.com/api/posts/{id}`
+`[PUT]: http://localhost:8000/api/posts/{id}`
 {
 "title": string
 "body": string
 }
 
-`[PUT]: https://mindaugaslazauskas.com/api/posts/{id}/status`
+`[PUT]: http://localhost:8000/api/posts/{id}/status`
 {
 "status": "DRAFT" | "PUBLISHED"
 }
 
-`[DELETE]: https://mindaugaslazauskas.com/api/posts/{id}`
+`[DELETE]: http://localhost:8000/api/posts/{id}`
 
 <strong>Users</strong>:
 
-`[GET]: https://mindaugaslazauskas.com/api/users`
-`[POST]: https://mindaugaslazauskas.com/api/users/avatar-upload`
+`[GET]: http://localhost:8000/api/users`
+`[POST]: http://localhost:8000/api/users/avatar-upload`
 Encoding: multipart/form-data
 {
 "file": File
 }
-`[DELETE]: https://mindaugaslazauskas.com/api/users/avatar-remove`
+`[DELETE]: http://localhost:8000/api/users/avatar-remove`
