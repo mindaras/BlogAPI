@@ -2,7 +2,7 @@
 
 From your project directory:
 
-`docker build -t blog-api .`
+`docker build --memory="8g" -t blog-api .`
 
 ## Run
 
