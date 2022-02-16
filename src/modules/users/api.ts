@@ -30,7 +30,7 @@ const getUser: RequestHandler = async (req, res) => {
 
   try {
     const user = await db.querySingle<User>(
-      `SELECT id, email, fullname, avatar FROM users WHERE id = $1`,
+      `SELECT id, email, fullname, avatar FROM users WHERE id = ?`,
       [id]
     );
 
@@ -46,11 +46,7 @@ const uploadAvatar: RequestHandler = async (req, res) => {
   const uri = `${config.aws.bucketUrl}${filename}`;
 
   try {
-    await db.querySingle<User>(`UPDATE users  SET avatar = $1 WHERE id = $2;`, [
-      uri,
-      id,
-    ]);
-
+    await db.mutate(`UPDATE users  SET avatar = ? WHERE id = ?;`, [uri, id]);
     res.json({ avatar: uri });
   } catch (e) {
     res.status(500).json(toErrorResponse(e));
@@ -62,22 +58,17 @@ const removeAvatar: RequestHandler = async (req, res) => {
 
   try {
     const { avatar } = await db.querySingle(
-      `SELECT avatar FROM users WHERE id = $1`,
-      [1]
+      `SELECT avatar FROM users WHERE id = ?`,
+      [id]
     );
 
     const filename = avatar?.split(config.aws.bucketUrl)[1];
 
-    s3.deleteObject({ Bucket: "blog-avatars", Key: filename }, (err) => {
+    s3.deleteObject({ Bucket: "blog-avatars", Key: filename }, async (err) => {
       if (err) throw err;
+      await db.mutate(`UPDATE users SET avatar = NULL WHERE id = ?;`, [id]);
+      res.sendStatus(204);
     });
-
-    await db.querySingle<User>(
-      `UPDATE users  SET avatar = NULL WHERE id = $1;`,
-      [id]
-    );
-
-    res.sendStatus(204);
   } catch (e) {
     res.status(500).json(toErrorResponse(e));
   }

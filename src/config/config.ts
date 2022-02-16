@@ -11,6 +11,7 @@ const config = {
     host: env.DB_HOST,
     port: parseInt(env.DB_PORT),
     database: env.DB,
+    connectionLimit: 10,
   },
   cache: {
     user: env.CACHE_USER,

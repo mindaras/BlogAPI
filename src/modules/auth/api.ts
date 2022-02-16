@@ -22,7 +22,7 @@ const signUp: RequestHandler = async (req, res) => {
     const hashedPassword = await hashPassword(password);
 
     await db.query(
-      `INSERT INTO users (email, password, fullname) VALUES ($1, $2, $3)`,
+      `INSERT INTO users (email, password, fullname) VALUES (?, ?, ?)`,
       [email, hashedPassword, fullname]
     );
 
@@ -38,7 +38,7 @@ const signIn: RequestHandler = async (req, res) => {
   try {
     const user = await db.querySingle<
       Pick<User, "id" | "fullname" | "password">
-    >(`SELECT id, password FROM users WHERE email = $1`, [email]);
+    >(`SELECT id, password FROM users WHERE email = ?`, [email]);
 
     if (!user) return res.status(401).send({ message: "Invalid credentials" });
 

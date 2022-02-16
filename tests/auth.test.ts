@@ -1,27 +1,34 @@
 import { expect } from "chai";
 import request from "supertest";
-import { Express } from "express";
-import { mockDb } from "./common/mockDb";
+import { mockDb } from "./common/dbMock";
 import { db } from "../src/db/client";
+import { app } from "../src/index";
+import { Connection } from "mysql";
 
 describe("Auth API", () => {
-  let app: Express;
+  let dbConnection: Connection;
 
-  before("Mock db connection and load app", async () => {
-    mockDb();
-    app = require("../src/index").app;
+  before("Mock db connection and load app", () => {
+    const { connection } = mockDb();
+    dbConnection = connection;
   });
 
   beforeEach("Create temporary tables", async () => {
-    await db.query(`
-      CREATE TEMPORARY TABLE users (LIKE users INCLUDING ALL);
-      CREATE TEMPORARY TABLE posts (LIKE posts INCLUDING ALL);`);
+    await Promise.all([
+      db.mutate(`CREATE TEMPORARY TABLE users SELECT * FROM users LIMIT 0;`),
+      db.mutate(`CREATE TEMPORARY TABLE posts SELECT * FROM posts LIMIT 0;`),
+    ]);
   });
 
   afterEach("Drop temporary tables", async () => {
-    await db.query(`
-      DROP TABLE IF EXISTS pg_temp.posts;
-      DROP TABLE IF EXISTS pg_temp.users`);
+    await Promise.all([
+      db.query(`DROP TEMPORARY TABLE IF EXISTS users;`),
+      db.query(`DROP TEMPORARY TABLE IF EXISTS posts;`),
+    ]);
+  });
+
+  after("Close db connection", () => {
+    dbConnection.end();
   });
 
   it("POST /api/auth/signup", async () => {
@@ -31,10 +38,12 @@ describe("Auth API", () => {
       fullname: "Mindaugas Lazauskas",
     };
 
+    expect(req.email).to.equal(req.email);
+
     await request(app).post("/api/auth/signup").send(req).expect(204);
 
     const user = await db.querySingle(
-      "SELECT email, password, fullname FROM users WHERE email = $1",
+      "SELECT email, password, fullname FROM users WHERE email = ?",
       [req.email]
     );
 

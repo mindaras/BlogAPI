@@ -1,6 +1,6 @@
 {
   "dev": {
-    "driver": "pg",
+    "driver": "mysql",
     "user": { "ENV": "DB_USER" },
     "password": { "ENV": "DB_PASSWORD" },
     "host": { "ENV": "DB_HOST" },

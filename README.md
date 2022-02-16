@@ -25,7 +25,9 @@ From your project directory:
 
 #### Local:
 
-<strong>db</strong>:
+#### db
+
+<strong>postgres</strong>:
 
 With data persistence:
 `docker run -d --rm --name blog-db --mount type=volume,src=data,target=/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_DB=blog -e POSTGRES_PASSWORD=mysecretpassword postgres`
@@ -33,11 +35,18 @@ With data persistence:
 Without data persistence:
 `docker run -d --rm --name blog-db -p 5432:5432 -e POSTGRES_DB=blog -e POSTGRES_PASSWORD=mysecretpassword postgres`
 
+<strong>mysql</strong>:
+
+With data persistence:
+`docker run -d --name blog-db -v mysqldata:/var/lib/mysql -p 3306:3306 -e MYSQL_DATABASE=blog -e MYSQL_ROOT_PASSWORD=mysecretpassword -e MYSQL_USER=mysql -e MYSQL_PASSWORD=mysecretpassword mysql`
+
 <strong>redis</strong>
 
 `docker run --rm -d -p 6379:6379 --name blog-redis redis --requirepass mysecretpassword`
 
-<strong>app</strong>:
+#### app
+
+app:
 
 `npm start`
 
