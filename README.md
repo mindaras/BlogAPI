@@ -10,7 +10,13 @@ From your project directory:
 
 #### Database:
 
+<strong>postgres</strong>:
+
 `docker run -d --restart unless-stopped --name blog-db --mount type=volume,src=data,target=/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_DB=blog -e POSTGRES_PASSWORD=mysecretpassword postgres`
+
+<strong>mysql</strong>:
+
+`docker run -d --restart unless-stopped --name blog-db -v mysqldata:/var/lib/mysql -p 3306:3306 -e MYSQL_DATABASE=blog -e MYSQL_ROOT_PASSWORD=mysecretpassword -e MYSQL_USER=mysql -e MYSQL_PASSWORD=mysecretpassword mysql`
 
 #### Cache:
 
