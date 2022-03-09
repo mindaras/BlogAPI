@@ -88,7 +88,7 @@ const refresh: RequestHandler = async (req, res) => {
     if (client) {
       return res
         .cookie("accessToken", accessToken, { httpOnly: true })
-        .cookie("newRefreshToken", newRefreshToken, { httpOnly: true })
+        .cookie("refreshToken", newRefreshToken, { httpOnly: true })
         .sendStatus(200);
     }
 
