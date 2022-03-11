@@ -99,14 +99,14 @@ Run: `npm test`
 
 <strong>Auth</strong>:
 
-`[POST]: http://localhost:8000/api/auth/signup`
+`[POST]: http://localhost:8000/api/auth/signup` <br />
 {
 "email": string,
 "password": string,
 "fullname": string
 }
 
-`[POST]: http://localhost:8000/api/auth/signin`
+`[POST]: http://localhost:8000/api/auth/signin` <br />
 {
 "email": string,
 "password": string,
@@ -116,19 +116,19 @@ Run: `npm test`
 
 `[GET]: http://localhost:8000/api/posts` <br />
 `[GET]: http://localhost:8000/api/posts/{id}` <br />
-`[POST]: http://localhost:8000/api/posts`
+`[POST]: http://localhost:8000/api/posts` <br />
 {
 "title": string
 "body": string
 }
 
-`[PUT]: http://localhost:8000/api/posts/{id}`
+`[PUT]: http://localhost:8000/api/posts/{id}` <br />
 {
 "title": string
 "body": string
 }
 
-`[PUT]: http://localhost:8000/api/posts/{id}/status`
+`[PUT]: http://localhost:8000/api/posts/{id}/status` <br />
 {
 "status": "DRAFT" | "PUBLISHED"
 }
@@ -137,8 +137,8 @@ Run: `npm test`
 
 <strong>Users</strong>:
 
-`[GET]: http://localhost:8000/api/users`
-`[POST]: http://localhost:8000/api/users/avatar-upload`
+`[GET]: http://localhost:8000/api/users` <br />
+`[POST]: http://localhost:8000/api/users/avatar-upload` <br />
 Encoding: multipart/form-data
 {
 "file": File
