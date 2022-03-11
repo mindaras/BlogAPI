@@ -77,7 +77,7 @@ Note: make npm installations in the container environment since some dependencie
 
 ## Migrations
 
-### Createg
+### Create
 
 `npm run migration:create migrationname -- --sql-file`
 
