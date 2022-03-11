@@ -34,7 +34,7 @@ const mutate = async <T = any>(
   return new Promise((resolve, reject) => {
     pool.query(sql, values, (error, result) => {
       if (error) reject(error);
-      resolve(result.insertId);
+      resolve(result?.insertId);
     });
   });
 };
