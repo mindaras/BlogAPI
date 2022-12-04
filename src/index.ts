@@ -3,9 +3,9 @@ import express from "express";
 import { postsApi } from "./modules/posts/api";
 import { authApi } from "./modules/auth/api";
 import cookieParser from "cookie-parser";
-import { urlencoded } from "body-parser";
 import { usersApi } from "@modules/users/api";
 import { auth } from "@auth/auth";
+import { config } from "@config/config";
 
 const app = express();
 
@@ -17,8 +17,8 @@ app.use(express.static("./public"));
 app.use("/api/auth", authApi);
 app.use("/api/users", auth, usersApi);
 app.use("/api/posts", postsApi);
-app.listen(process.env.PORT, () =>
-  console.log(`Listening on port: ${process.env.PORT}`)
+app.listen(config.app.PORT, () =>
+  console.log(`Listening on port: ${config.app.PORT}`)
 );
 
 export { app };
