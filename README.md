@@ -139,8 +139,9 @@ Run: `npm test`
 
 `[GET]: http://localhost:8000/api/users` <br />
 `[POST]: http://localhost:8000/api/users/avatar-upload` <br />
-Encoding: multipart/form-data
+Encoding: multipart/form-data <br />
 {
 "file": File
 }
+
 `[DELETE]: http://localhost:8000/api/users/avatar-remove`
