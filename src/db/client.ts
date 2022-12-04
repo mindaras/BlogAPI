@@ -1,16 +1,16 @@
 import { config } from "@config/config";
-import mysql from "mysql";
+import { Pool } from "pg";
 
-const pool = mysql.createPool(config.db);
+const pool = new Pool(config.db);
 
 const query = async <T>(
   sql: string,
   values?: Array<string | number>
 ): Promise<T[]> => {
   return new Promise((resolve, reject) => {
-    pool.query(sql, values, (error, results) => {
+    pool.query<T[], any>(sql, values, (error, result) => {
       if (error) reject(error);
-      else resolve(results as T[]);
+      else resolve(result?.rows as T[]);
     });
   });
 };
@@ -20,9 +20,9 @@ const querySingle = async <T = any>(
   values?: Array<string | number>
 ): Promise<T> => {
   return new Promise((resolve, reject) => {
-    pool.query(sql, values, (error, results) => {
+    pool.query<T[], any>(sql, values, (error, result) => {
       if (error) reject(error);
-      resolve(results?.[0] as T);
+      resolve(result?.rows?.[0] as T);
     });
   });
 };
@@ -32,9 +32,9 @@ const mutate = async <T = any>(
   values?: Array<string | number>
 ): Promise<T> => {
   return new Promise((resolve, reject) => {
-    pool.query(sql, values, (error, result) => {
+    pool.query<T[], any>(sql, values, (error, result) => {
       if (error) reject(error);
-      resolve(result?.insertId);
+      resolve(result?.rows?.[0] as T);
     });
   });
 };
