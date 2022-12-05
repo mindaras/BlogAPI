@@ -7,7 +7,7 @@ import { Post } from "./models";
 const getAll: RequestHandler = async (_, res) => {
   try {
     const data = await db.query(
-      `SELECT p.id, p.title, p.status, p.body, DATE_FORMAT(p.createdon, '%Y-%m-%d') AS createdon, DATE_FORMAT(p.updatedon, '%Y-%m-%d') AS updatedon, u.fullname as author 
+      `SELECT p.id, p.title, p.status, p.body, TO_CHAR(p.createdon, 'yyyy-mm-dd') AS createdon, TO_CHAR(p.updatedon, 'yyyy-mm-dd') AS updatedon, u.fullname as author 
        FROM posts as p 
        INNER JOIN users AS u ON u.id = p.userid;`
     );
@@ -24,9 +24,9 @@ const get: RequestHandler = async (req, res) => {
 
   try {
     const post = await db.querySingle(
-      `SELECT p.id, p.title, p.status, p.body, DATE_FORMAT(p.createdon, '%Y-%m-%d') AS createdon, DATE_FORMAT(p.updatedon, '%Y-%m-%d') AS updatedon, u.fullname as author 
+      `SELECT p.id, p.title, p.status, p.body, TO_CHAR(p.createdon, 'yyyy-mm-dd') AS createdon, TO_CHAR(p.updatedon, 'yyyy-mm-dd') AS updatedon, u.fullname as author 
        FROM posts AS p 
-       INNER JOIN users AS u ON u.id = p.userid WHERE p.id = ?;`,
+       INNER JOIN users AS u ON u.id = p.userid WHERE p.id = $1;`,
       [id]
     );
 
@@ -44,14 +44,10 @@ const create: RequestHandler = async (req, res) => {
   const user = parseAuthPayload(req);
 
   try {
-    const id = await db.mutate(
-      `INSERT INTO posts(title, body, userid) VALUES(?, ?, ?);`,
+    const post = await db.mutate(
+      `INSERT INTO posts(title, body, userid) VALUES($1, $2, $3)
+      RETURNING  *, TO_CHAR(createdon, 'yyyy-mm-dd') AS createdon, TO_CHAR(updatedon, 'yyyy-mm-dd') AS updatedon;`,
       [title, body, user?.id]
-    );
-
-    const post = await db.querySingle(
-      `SELECT *, DATE_FORMAT(createdon, '%Y-%m-%d') as createdon FROM posts WHERE id = ?;`,
-      [id]
     );
 
     res.json(post);
@@ -62,7 +58,7 @@ const create: RequestHandler = async (req, res) => {
 
 const checkOwnership: RequestHandler = async (req, res, next) => {
   const post = await db.querySingle<Pick<Post, "userid">>(
-    "SELECT userid FROM posts WHERE id = ?",
+    "SELECT userid FROM posts WHERE id = $1",
     [req.params.id]
   );
 
@@ -83,14 +79,10 @@ const update: RequestHandler = async (req, res) => {
   const { title, body }: Post = req.body;
 
   try {
-    await db.mutate(
-      `UPDATE posts SET title = ?, body = ?, updatedon = now() WHERE id = ?;`,
+    const post = await db.mutate(
+      `UPDATE posts SET title = $1, body = $2 WHERE id = $3
+      RETURNING  *, TO_CHAR(createdon, 'yyyy-mm-dd') AS createdon, TO_CHAR(updatedon, 'yyyy-mm-dd') AS updatedon;`,
       [title, body, id]
-    );
-
-    const post = await db.querySingle<Post>(
-      `SELECT *, DATE_FORMAT(createdon, '%Y-%m-%d') as createdon, DATE_FORMAT(updatedon, '%Y-%m-%d') as updatedon FROM posts WHERE id = ?;`,
-      [id]
     );
 
     res.json(post);
@@ -104,14 +96,11 @@ const updateStatus: RequestHandler = async (req, res) => {
   const { status }: Post = req.body;
 
   try {
-    await db.mutate<Post>(`UPDATE posts SET status = ? WHERE id = ?;`, [
-      status,
-      id,
-    ]);
-
-    const post = await db.querySingle<Post>(
-      `SELECT *, DATE_FORMAT(createdon, '%Y-%m-%d') as createdon, DATE_FORMAT(updatedon, '%Y-%m-%d') as updatedon FROM posts WHERE id = ?;`,
-      [id]
+    const post = await db.mutate<Post>(
+      `
+      UPDATE posts SET status = $1 WHERE id = $2
+      RETURNING *, TO_CHAR(createdon, 'yyyy-mm-dd') AS createdon, TO_CHAR(updatedon, 'yyyy-mm-dd') AS updatedon;`,
+      [status, id]
     );
 
     res.json(post);
@@ -122,7 +111,7 @@ const updateStatus: RequestHandler = async (req, res) => {
 
 const remove: RequestHandler = async (req, res) => {
   try {
-    await db.query("DELETE FROM posts WHERE id = ?", [req.params.id]);
+    await db.query("DELETE FROM posts WHERE id = $1", [req.params.id]);
     res.sendStatus(204);
   } catch (e) {
     res.status(400).json(toErrorResponse(e));
